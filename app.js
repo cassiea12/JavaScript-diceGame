@@ -9,23 +9,56 @@ GAME RULES:
 
 */
 
-var scores, roundScores, activePlayer, dice;
+var scores, roundScores, activePlayer;
 
 scores = [0,0];
 roundScore = 0;
 activePlayer = 0;
 
-// .random outputs a random number between 0 and 6 which may have a decimal
-//  . floor takes that random number and removes the decimal
-// + 1 ensures there will never be a 0
-dice = Math.floor(Math.random() * 6) + 1;
 
-// querySelector('#current-0') finds the element with a specific id in the html page
-// textContent = dice; changes the text inside the element to whatever text is after the =
-// innerHTML = dice; changes the text inside the element to html code
-document.querySelector('#current-' + activePlayer).textContent = dice;
-
-
-// Change the css display property of the element with a class of .dice to none so the die does not show
-var x = document.querySelector('#score-0').textContent = dice;
 document.querySelector('.dice').style.display = 'none';
+
+document.getElementById('score-0').textContent= '0';
+document.getElementById('score-1').textContent= '0';
+
+document.getElementById('current-0').textContent= '0';
+document.getElementById('current-1').textContent= '0';
+
+document.querySelector('.btn-roll').addEventListener('click', function() {
+
+	// 1. random number
+	var dice = Math.floor(Math.random() * 6) + 1;
+
+	// 2. Display Result
+	var diceDOM = document.querySelector('.dice');
+	diceDOM.style.display = 'block';
+	diceDOM.src = 'dice-' + dice + '.png';
+
+	// 3. Update the round score IF the rolled number was NOT a 1
+
+
+
+
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
