@@ -9,14 +9,16 @@ GAME RULES:
 
 */
 
-var scores, roundScores, activePlayer, gamePlaying;
+var scores, roundScores, activePlayer, gamePlaying, lastRoll, winningScore;
 
 init();
 
+// When the roll dice button is clicked...
 document.querySelector('.btn-roll').addEventListener('click', function() {
 
 	if(gamePlaying) {
-				// 1. random number
+
+		// 1. random number
 		var dice = Math.floor(Math.random() * 6) + 1;
 
 		// 2. Display Result
@@ -24,11 +26,35 @@ document.querySelector('.btn-roll').addEventListener('click', function() {
 		diceDOM.style.display = 'block';
 		diceDOM.src = 'dice-' + dice + '.png';
 
-		// 3. Update the round score IF the rolled number was NOT a 1
-		if(dice !== 1) {
+		// if 2 sixes were rolled in a row...
+		if (dice === 6 && lastRoll === 6){
+			// if dice = 6 and last dice = 6
+
+			//player loses entire score
+			scores[activePlayer] = 0;
+
+			// update the UI
+			document.querySelector('#score-' + activePlayer).textContent = '0';
+
+			//reset lastRoll variable
+			lastRoll= -1;
+
+			//next players turn
+			nextPlayer();
+		}
+		//  Update the round score IF the rolled number was NOT a 1 or 2 sixes in a row
+		else if(dice !== 1) {
 			//add score
 			roundScore += dice;
 			document.querySelector('#current-' + activePlayer).textContent = roundScore;
+
+			if (dice === 6) {
+				lastRoll = 6;
+
+			} else {
+				lastRoll= -1;
+			}
+
 
 		} else {
 			//next player
@@ -53,7 +79,14 @@ document.querySelector('.btn-hold').addEventListener('click', function() {
 	document.querySelector('#score-' + activePlayer).textContent = scores[activePlayer];
 
 	// check if player won the game
-		if (scores[activePlayer] >= 20) {
+var newScore = document.getElementById("newScore").value;
+
+	if (newScore) {
+		winningScore = newScore;
+	} else {
+		winningScore = 100;
+	}
+		if (scores[activePlayer] >= winningScore) {
 			document.querySelector('#name-' + activePlayer).textContent = "Winner!";
 			document.querySelector('.dice').style.display = 'none';
 			document.querySelector('.player-' + activePlayer + '-panel').classList.add('winner');
@@ -100,10 +133,7 @@ function init () {
 
 }
 
-
-
-
-
+// next player's turn
 
 function nextPlayer () {
 	activePlayer=== 0 ? activePlayer = 1 : activePlayer = 0;
@@ -116,6 +146,8 @@ function nextPlayer () {
 		document.querySelector('.player-1-panel').classList.toggle('active');
 
 		document.querySelector('.dice').style.display = 'none';
+
+		lastRoll = -1;
 
 }
 
